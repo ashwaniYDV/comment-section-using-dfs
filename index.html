@@ -9,7 +9,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="./">Comment section using Trees and DFS</a>
+            <a class="navbar-brand" href="./">Comment section using Tree-DS and DFS</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -42,125 +42,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
-    <script>
-        let data = [
-            // {
-            //     id: "1",
-            //     parId: "0",
-            //     text: "comment 1"
-            // }
-        ];
-        let graph = {};
-        let vis = {};
-        let myData = {}; 
-
-        function dfs(u, par) {
-            vis[u] = true;
-            if(u != "0") {
-                let htmldata = `<br/>
-                                <div class="card" style="">
-                                    <img class="card-img-top">
-                                    <div class="card-body" id="${ u }">
-                                        <p class="card-text">${ myData[u] }</p>
-                                        <button class="btn btn-primary btn-sm replybtn" data-replybtn="${ u }">Reply</button>
-                                        <br/>
-                                        <form class="form" id="form${ u }" data-replybtn="${ u }" data-par="${ par }" style="display: none">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="input${ u }" placeholder="Add reply" autofocus>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                </div>`;
-                let parId = "#"+par;
-                $(parId).append(htmldata)
-            }
-
-            graph[u] && graph[u].forEach((v, index) => {
-                if(!vis[v]) {
-                    dfs(v, u);
-                }
-            });
-        }
-
-        function init() {
-            graph = {};
-            vis = {};
-            myData = {};   
-
-            document.getElementById('0').innerHTML = "";
-
-            data.forEach((element, index) => {
-                graph[element.id] = [];
-                graph[element.parId] = [];
-                vis[element.id] = false;
-                vis[element.parId] = false;
-                myData[element.id] = element.text;
-            });
-
-            data.forEach((element, index) => {
-                graph[element.id].push(element.parId);
-                graph[element.parId].push(element.id);
-            });
-
-            console.log(graph)
-            console.log(vis)
-            let node = "0", par = null;
-            dfs(node, par);
-
-            document.querySelectorAll('.replybtn').forEach(item => {
-                item.addEventListener('click', e => {
-                    let id = item.getAttribute('data-replybtn');
-                    let formId = "#form" + id;
-                    let form = document.querySelector(formId);
-                    if(form.style.display == 'none') {
-                        form.style.display = 'block'
-                    } else {
-                        form.style.display = 'none'
-                    }
-                })
-            })
-            
-            document.querySelectorAll('.form').forEach(item => {
-                item.addEventListener('submit', e => {
-                    e.preventDefault();
-                    let id = item.getAttribute('data-replybtn');
-                    let inpId = "#input" + id;
-                    let text = document.querySelector(inpId).value;
-                    if(!text.trim()) return;
-
-                    let newData = {
-                        id: new Date().getTime().toString(),
-                        parId: id,
-                        text: text
-                    }
-
-                    data.push(newData);
-
-                    init();
-                })
-            })
-        }
-
-        document.querySelector('#form0').addEventListener('submit', e => {
-            e.preventDefault();
-            let text = document.querySelector('#input0').value;
-            if(!text.trim()) return;
-
-            let newData = {
-                id: new Date().getTime().toString(),
-                parId: "0",
-                text: text
-            }
-
-            data.push(newData);
-
-            init();
-            document.querySelector('#input0').value = '';
-        })
-
-        init();
-
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
